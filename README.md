@@ -2,7 +2,7 @@
 
 Site de vendas criado para divulgar e comercializar pães de mel artesanais, com atendimento direto via WhatsApp.
 
-🔗 **[Acesse o site ao vivo](https://ramon-lopes.github.io/pao-de-mel/)**
+🔗 **[Acesse o site ao vivo](https://ramon-lopes.github.io/pao-de-mel-landing-page/)**
 
 ---
 
@@ -43,7 +43,7 @@ cd pao-de-mel
 
 ## 📱 Preview
 
-> Acesse: [ramon-lopes.github.io/pao-de-mel](https://ramon-lopes.github.io/pao-de-mel/)
+> Acesse: [ramon-lopes.github.io/pao-de-mel](https://ramon-lopes.github.io/pao-de-mel-landing-page/)
 
 ---
 
