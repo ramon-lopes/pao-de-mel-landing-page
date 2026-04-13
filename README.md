@@ -32,10 +32,10 @@ Landing page desenvolvida para apresentar os produtos, preços e diferenciais de
 
 ```bash
 # Clone o repositório
-git clone https://github.com/ramon-lopes/pao-de-mel.git
+git clone https://github.com/ramon-lopes/pao-de-mel-landing-page.git
 
 # Abra o arquivo no navegador
-cd pao-de-mel
+cd pao-de-mel-landing-page
 # Abra o index.html no seu navegador preferido
 ```
 
@@ -43,7 +43,7 @@ cd pao-de-mel
 
 ## 📱 Preview
 
-> Acesse: [ramon-lopes.github.io/pao-de-mel](https://ramon-lopes.github.io/pao-de-mel-landing-page/)
+> Acesse: [ramon-lopes.github.io/pao-de-mel-landing-page](https://ramon-lopes.github.io/pao-de-mel-landing-page/)
 
 ---
 
