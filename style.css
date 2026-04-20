@@ -791,33 +791,60 @@ footer {
   }
 }
 
-/* ─── RESPONSIVO ─── */
-@media (max-width: 420px) {
-  .product-body {
-    flex-direction: column;
-    gap: 20px;
+/* ============================================================
+   RESPONSIVO — MEL REAL (Tablet + Mobile)
+   ============================================================ */
+
+/* ─── TABLET (até 768px) ─── */
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 16px 60px;
   }
 
   .hero-logo-wrap {
-    width: 280px;
-    height: 280px;
+    width: 220px;
+    height: 220px;
   }
 
-  .hero-logo-wrap img {
-    width: 95%;
-    height: 95%;
+  .hero h1 {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+    word-break: break-word;
+  }
+
+  .cta-main {
+    padding: 14px 24px;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-section,
+  .menu-section,
+  .testimonials-section,
+  .faq-section,
+  .cta-section {
+    padding: 60px 16px;
+  }
+
+  .product-body {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 
   .product-right {
-    text-align: left;
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
   }
 
-  .product-right .product-price {
-    margin-bottom: 0;
+  .btn-order {
+    white-space: normal;
+    text-align: center;
   }
 
   .social-bar {
@@ -827,5 +854,87 @@ footer {
 
   .social-bar-divider {
     display: none;
+  }
+}
+
+/* ─── MOBILE (até 480px) ─── */
+@media (max-width: 480px) {
+  .hero-logo-wrap {
+    width: 180px;
+    height: 180px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+  }
+
+  .hero-sub {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+  }
+
+  .hero-tagline {
+    font-size: 0.85rem;
+  }
+
+  .divider-gold {
+    width: 140px;
+  }
+
+  .product-name {
+    font-size: 1.3rem;
+  }
+
+  .product-price {
+    font-size: 1.5rem;
+  }
+
+  .payment-info {
+    padding: 20px 16px;
+  }
+
+  .pay-chip {
+    font-size: 0.7rem;
+    padding: 6px 10px;
+  }
+
+  .testimonial-text {
+    font-size: 1rem;
+  }
+
+  .cta-section h2 {
+    font-size: 1.6rem;
+  }
+
+  .cta-whatsapp {
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+    font-size: 0.8rem;
+  }
+
+  .footer-brand {
+    font-size: 1.5rem;
+  }
+}
+
+/* ─── MOBILE MUITO PEQUENO (até 360px) ─── */
+@media (max-width: 360px) {
+  .hero-logo-wrap {
+    width: 150px;
+    height: 150px;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .product-body {
+    gap: 12px;
+  }
+
+  .product-price {
+    font-size: 1.3rem;
   }
 }
