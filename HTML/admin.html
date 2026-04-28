@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mel Real · Admin</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Belleza&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gold: #deb34f;
+        --gold-dim: rgba(222, 179, 79, 0.15);
+        --gold-border: rgba(222, 179, 79, 0.3);
+        --bg: #0e1220;
+        --surface: #161d2e;
+        --surface2: #1e2847;
+        --text: #f0e6cc;
+        --text-dim: rgba(240, 230, 204, 0.5);
+        --red: #e05c5c;
+        --green: #5ce0a0;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Belleza", sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+      #login-screen {
+        width: 100%;
+        max-width: 380px;
+        text-align: center;
+        animation: fadeUp 0.5s ease both;
+      }
+      #login-screen .brand {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        color: var(--gold);
+        margin-bottom: 4px;
+      }
+      #login-screen .brand em {
+        font-style: italic;
+      }
+      #login-screen .subtitle {
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 40px;
+      }
+      .login-box {
+        background: var(--surface);
+        border: 1px solid var(--gold-border);
+        border-radius: 4px;
+        padding: 32px 28px;
+      }
+      .login-box label {
+        display: block;
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 8px;
+        text-align: left;
+      }
+      .login-box input {
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--gold-border);
+        border-radius: 2px;
+        color: var(--text);
+        font-family: "Belleza", sans-serif;
+        font-size: 1rem;
+        padding: 12px 16px;
+        outline: none;
+        transition: border-color 0.2s;
+        margin-bottom: 20px;
+      }
+      .login-box input:focus {
+        border-color: var(--gold);
+      }
+      .btn-login {
+        width: 100%;
+        background: var(--gold);
+        color: #0e1220;
+        border: none;
+        border-radius: 2px;
+        font-family: "Belleza", sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 14px;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .btn-login:hover {
+        opacity: 0.85;
+      }
+      .btn-login:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .login-error {
+        color: var(--red);
+        font-size: 0.78rem;
+        margin-top: 12px;
+        min-height: 18px;
+        letter-spacing: 0.5px;
+      }
+      #admin-panel {
+        display: none;
+        width: 100%;
+        max-width: 440px;
+        animation: fadeUp 0.4s ease both;
+      }
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+      .panel-header .brand {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        color: var(--gold);
+      }
+      .panel-header .brand em {
+        font-style: italic;
+      }
+      .panel-header .badge {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        border: 1px solid var(--gold-border);
+        border-radius: 20px;
+        padding: 4px 12px;
+      }
+      .status-card {
+        background: var(--surface);
+        border: 1px solid var(--gold-border);
+        border-radius: 4px;
+        padding: 24px;
+        margin-bottom: 16px;
+        position: relative;
+        overflow: hidden;
+      }
+      .status-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+      }
+      .status-label {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 16px;
+      }
+      .status-row {
+        display: flex;
+        gap: 16px;
+      }
+      .stat-box {
+        flex: 1;
+        background: var(--bg);
+        border: 1px solid var(--gold-border);
+        border-radius: 3px;
+        padding: 14px 12px;
+        text-align: center;
+      }
+      .stat-value {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        color: var(--gold);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .stat-value.verde {
+        color: var(--green);
+      }
+      .stat-value.vermelho {
+        color: var(--red);
+      }
+      .stat-key {
+        font-size: 0.62rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 14px;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        padding: 5px 12px;
+        border-radius: 20px;
+      }
+      .status-pill.ok {
+        background: rgba(92, 224, 160, 0.1);
+        color: var(--green);
+        border: 1px solid rgba(92, 224, 160, 0.3);
+      }
+      .status-pill.esgotado {
+        background: rgba(224, 92, 92, 0.1);
+        color: var(--red);
+        border: 1px solid rgba(224, 92, 92, 0.3);
+      }
+      .status-pill .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: pulse 2s ease infinite;
+      }
+      .action-card {
+        background: var(--surface);
+        border: 1px solid var(--gold-border);
+        border-radius: 4px;
+        padding: 22px 24px;
+        margin-bottom: 12px;
+      }
+      .action-title {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 14px;
+      }
+      .stepper {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .stepper-btn {
+        width: 40px;
+        height: 40px;
+        background: var(--bg);
+        border: 1px solid var(--gold-border);
+        border-radius: 2px;
+        color: var(--gold);
+        font-size: 1.4rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+        flex-shrink: 0;
+        font-family: monospace;
+      }
+      .stepper-btn:hover {
+        background: var(--gold-dim);
+        border-color: var(--gold);
+      }
+      .stepper-btn:active {
+        transform: scale(0.95);
+      }
+      .stepper input {
+        flex: 1;
+        background: var(--bg);
+        border: 1px solid var(--gold-border);
+        border-radius: 2px;
+        color: var(--text);
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        text-align: center;
+        padding: 8px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .stepper input:focus {
+        border-color: var(--gold);
+      }
+      .btn-apply {
+        width: 100%;
+        margin-top: 14px;
+        background: transparent;
+        border: 1px solid var(--gold);
+        border-radius: 2px;
+        color: var(--gold);
+        font-family: "Belleza", sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 12px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s;
+      }
+      .btn-apply:hover {
+        background: var(--gold);
+        color: #0e1220;
+      }
+      .btn-apply:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+      .btn-reset {
+        width: 100%;
+        background: transparent;
+        border: 1px solid rgba(224, 92, 92, 0.4);
+        border-radius: 2px;
+        color: var(--red);
+        font-family: "Belleza", sans-serif;
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 12px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .btn-reset:hover {
+        background: rgba(224, 92, 92, 0.1);
+      }
+      #toast {
+        position: fixed;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--surface2);
+        border: 1px solid var(--gold-border);
+        color: var(--gold);
+        padding: 12px 24px;
+        border-radius: 2px;
+        font-size: 0.78rem;
+        letter-spacing: 1px;
+        opacity: 0;
+        transition:
+          opacity 0.3s,
+          transform 0.3s;
+        pointer-events: none;
+        white-space: nowrap;
+        z-index: 999;
+      }
+      #toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      #toast.erro {
+        border-color: rgba(224, 92, 92, 0.5);
+        color: var(--red);
+      }
+      .divider {
+        text-align: center;
+        color: var(--gold-border);
+        font-size: 0.7rem;
+        letter-spacing: 3px;
+        margin: 8px 0 4px;
+      }
+      .btn-logout {
+        width: 100%;
+        margin-top: 8px;
+        background: transparent;
+        border: none;
+        color: var(--text-dim);
+        font-family: "Belleza", sans-serif;
+        font-size: 0.68rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 10px;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .btn-logout:hover {
+        color: var(--text);
+      }
+      .loading-bar {
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          transparent
+        );
+        background-size: 200% 100%;
+        animation: shimmer 1.2s linear infinite;
+        border-radius: 1px;
+        margin-bottom: 16px;
+        display: none;
+      }
+      .loading-bar.ativo {
+        display: block;
+      }
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="login-screen">
+      <p class="brand">Mel <em>Real</em></p>
+      <p class="subtitle">Painel Admin</p>
+      <div class="login-box">
+        <label for="input-senha">Senha</label>
+        <input
+          type="password"
+          id="input-senha"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+        <button class="btn-login" id="btn-login" onclick="entrar()">
+          Entrar
+        </button>
+        <p class="login-error" id="login-erro"></p>
+      </div>
+    </div>
+
+    <div id="admin-panel">
+      <div class="panel-header">
+        <span class="brand">Mel <em>Real</em></span>
+        <span class="badge">Admin</span>
+      </div>
+
+      <div class="loading-bar" id="loading-bar"></div>
+
+      <div class="status-card">
+        <p class="status-label">Status do Estoque</p>
+        <div class="status-row">
+          <div class="stat-box">
+            <div class="stat-value verde" id="stat-disponivel">—</div>
+            <div class="stat-key">Disponível</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="stat-reservado">—</div>
+            <div class="stat-key">Reservado</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-value" id="stat-limite">—</div>
+            <div class="stat-key">Limite</div>
+          </div>
+        </div>
+        <div id="status-pill"></div>
+      </div>
+
+      <div class="action-card">
+        <p class="action-title">Ajustar Limite Diário</p>
+        <div class="stepper">
+          <button class="stepper-btn" onclick="ajustarInput(-5)">−</button>
+          <input type="number" id="input-limite" value="30" min="0" max="999" />
+          <button class="stepper-btn" onclick="ajustarInput(+5)">+</button>
+        </div>
+        <button class="btn-apply" id="btn-aplicar" onclick="aplicarLimite()">
+          Aplicar Limite
+        </button>
+      </div>
+
+      <div class="action-card">
+        <p class="action-title">Reset Manual</p>
+        <button class="btn-reset" onclick="confirmarReset()">
+          Zerar Reservas do Dia
+        </button>
+      </div>
+
+      <div class="divider">· · ·</div>
+      <button class="btn-logout" onclick="sair()">Sair</button>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+      const API_URL = "https://mel-real-api.onrender.com";
+
+      document
+        .getElementById("input-senha")
+        .addEventListener("keydown", (e) => {
+          if (e.key === "Enter") entrar();
+        });
+
+      // ── LOGIN: envia senha pro backend, recebe token ───────────────
+      async function entrar() {
+        const senha = document.getElementById("input-senha").value;
+        const erroEl = document.getElementById("login-erro");
+        const btn = document.getElementById("btn-login");
+
+        if (!senha) {
+          erroEl.textContent = "Informe a senha.";
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = "Verificando...";
+        erroEl.textContent = "";
+
+        try {
+          const res = await fetch(`${API_URL}/estoque/admin/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ senha }),
+          });
+
+          if (res.status === 401 || res.status === 403) {
+            erroEl.textContent = "Senha incorreta.";
+            return;
+          }
+          if (!res.ok) {
+            erroEl.textContent = "Erro ao conectar. Tente novamente.";
+            return;
+          }
+
+          const data = await res.json();
+          // Token fica só na memória da sessão — some ao fechar a aba
+          sessionStorage.setItem("admin_token", data.token);
+
+          document.getElementById("login-screen").style.display = "none";
+          document.getElementById("admin-panel").style.display = "block";
+          carregarEstoque();
+        } catch (e) {
+          erroEl.textContent = "Erro de conexão.";
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Entrar";
+        }
+      }
+
+      function sair() {
+        sessionStorage.removeItem("admin_token");
+        document.getElementById("admin-panel").style.display = "none";
+        document.getElementById("login-screen").style.display = "block";
+        document.getElementById("input-senha").value = "";
+      }
+
+      function getToken() {
+        return sessionStorage.getItem("admin_token") || "";
+      }
+
+      // ── ESTOQUE ───────────────────────────────────────────────────
+      async function carregarEstoque() {
+        setLoading(true);
+        try {
+          const res = await fetch(`${API_URL}/estoque`);
+          const data = await res.json();
+
+          const disponivel = data.disponivel;
+          const limite = data.limite;
+          const reservado = limite - disponivel;
+
+          document.getElementById("stat-disponivel").textContent = disponivel;
+          document.getElementById("stat-reservado").textContent = reservado;
+          document.getElementById("stat-limite").textContent = limite;
+          document.getElementById("input-limite").value = limite;
+
+          const pilEl = document.getElementById("status-pill");
+          if (data.esgotado) {
+            pilEl.innerHTML = `<span class="status-pill esgotado"><span class="dot"></span>Esgotado</span>`;
+            document.getElementById("stat-disponivel").className =
+              "stat-value vermelho";
+          } else {
+            pilEl.innerHTML = `<span class="status-pill ok"><span class="dot"></span>Disponível</span>`;
+            document.getElementById("stat-disponivel").className =
+              "stat-value verde";
+          }
+        } catch (e) {
+          toast("Erro ao conectar na API", true);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function ajustarInput(delta) {
+        const el = document.getElementById("input-limite");
+        const val = Math.max(0, (parseInt(el.value) || 0) + delta);
+        el.value = val;
+      }
+
+      async function aplicarLimite() {
+        const valor = parseInt(document.getElementById("input-limite").value);
+        if (isNaN(valor) || valor < 0) {
+          toast("Valor inválido", true);
+          return;
+        }
+
+        const btn = document.getElementById("btn-aplicar");
+        btn.disabled = true;
+        setLoading(true);
+
+        try {
+          const res = await fetch(
+            `${API_URL}/estoque/admin/limite?valor=${valor}`,
+            {
+              method: "PUT",
+              headers: { Authorization: `Bearer ${getToken()}` },
+            },
+          );
+
+          if (res.status === 401 || res.status === 403) {
+            toast("Sessão expirada.", true);
+            sair();
+            return;
+          }
+          if (!res.ok) {
+            toast("Erro ao atualizar", true);
+            return;
+          }
+
+          await carregarEstoque();
+          toast(`Limite atualizado para ${valor} unidades ✓`);
+        } catch (e) {
+          toast("Erro de conexão", true);
+        } finally {
+          btn.disabled = false;
+          setLoading(false);
+        }
+      }
+
+      async function confirmarReset() {
+        if (!confirm("Zerar todas as reservas do dia?")) return;
+
+        setLoading(true);
+        try {
+          const res = await fetch(`${API_URL}/estoque/admin/reset`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${getToken()}` },
+          });
+
+          if (res.status === 401 || res.status === 403) {
+            toast("Sessão expirada.", true);
+            sair();
+            return;
+          }
+          if (!res.ok) {
+            toast("Erro ao resetar", true);
+            return;
+          }
+
+          await carregarEstoque();
+          toast("Estoque resetado com sucesso ✓");
+        } catch (e) {
+          toast("Erro de conexão", true);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function setLoading(ativo) {
+        document.getElementById("loading-bar").classList.toggle("ativo", ativo);
+      }
+
+      let toastTimer;
+      function toast(msg, erro = false) {
+        const el = document.getElementById("toast");
+        el.textContent = msg;
+        el.className = "show" + (erro ? " erro" : "");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          el.className = "";
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>
